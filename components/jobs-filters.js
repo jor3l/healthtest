@@ -28,7 +28,7 @@ const sortIcon = (direction) => {
 };
 
 const JobsFilters = ({ jobs, sort, toggleSort }) => (
-  <div class="py-4 flex mb-6">
+  <div class="py-4 flex mb-6 flex-wrap">
     <div class="flex-auto">
       {jobs && (
         <>
@@ -39,7 +39,7 @@ const JobsFilters = ({ jobs, sort, toggleSort }) => (
         </>
       )}
     </div>
-    <ul class="sort flex">
+    <ul class="sort flex flex-wrap">
       <li class="mr-4 text-gray-400">Sort by</li>
       <li class="mr-4 cursor-pointer" onClick={() => toggleSort("city")}>
         Location {sortIcon(sort.city)}

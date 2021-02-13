@@ -1,6 +1,6 @@
 const Search = ({ onChange }) => (
   <>
-    <div class="relative bg-gray-50 pt-5 col-span-6">
+    <div class="relative bg-gray-50 pt-5 col-span-full md:col-span-6">
       <div class="container mx-auto">
         <div class=" bg-white rounded flex items-center w-full p-3 px-6 shadow-sm border border-gray-200">
           <button class="outline-none focus:outline-none">
@@ -21,7 +21,7 @@ const Search = ({ onChange }) => (
             name=""
             id=""
             placeholder="Search for any job, title, keywords or company"
-            class="w-full pl-4 py-2 text-sm outline-none focus:outline-none bg-transparent"
+            class="w-full md:pl-4 md:py-2 text-sm outline-none focus:outline-none bg-transparent"
             onChange={(e) =>
               (e.target.value.length > 3 || e.target.value.length === 0) &&
               onChange(e.target.value)

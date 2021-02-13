@@ -1,5 +1,9 @@
-const Filter = ({ name, filter, onFilter }) => (
-  <div class="bg-white p-4 mb-4 border border-solid border-gray-100">
+const Filter = ({ name, filter, onFilter, show }) => (
+  <div
+    class={`bg-white p-4 mb-4 border border-solid border-gray-100 ${
+      show ? "block" : "hidden"
+    } md:block`}
+  >
     <b class="block uppercase text-sm mb-5">{name.split("_").join(" ")}</b>
     {filter.map((filterOption, i) => (
       <a

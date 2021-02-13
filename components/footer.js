@@ -1,6 +1,6 @@
 const Footer = () => (
   <div class="footer mt-8 bg-white pb-8">
-    <div class="container mx-auto grid grid-cols-3">
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-0">
       <div class="px-10">
         <h2 class="text-lg font-bold mb-2">About us</h2>
         <p>

@@ -29,6 +29,7 @@ const getJobs = async (filters, search) => {
 };
 
 function Index({ _jobs, filters }) {
+  const [filtersShow, setFiltersShow] = useState(false);
   const [searchFilters, setFilters] = useState({});
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState({
@@ -57,13 +58,24 @@ function Index({ _jobs, filters }) {
   return (
     <>
       <Header />
-      <div class="bg-gray-50 min-h-screen pb-10">
-        <main class="container mx-auto grid grid-cols-6 gap-4 h-full auto-rows-max">
+      <div class="bg-gray-50 min-h-screen pb-10 px-4 md:px-0">
+        <main class="container mx-auto grid grid-cols-1 md:grid-cols-6 gap-4 h-full auto-rows-max">
           <Search onChange={(value) => setSearch(value)} />
-          <div class="side-column">
+          <div class="side-column col-span-full md:col-span-1">
+            {filters && (
+              <div
+                class={`md:hidden filters-toggle block py-2 text-xs border border-gray-200 rounded md:mb-0 text-center ${
+                  filtersShow && "mb-4"
+                }`}
+                onClick={() => setFiltersShow(!filtersShow)}
+              >
+                {!filtersShow ? "Show" : "Hide"} filters
+              </div>
+            )}
             {filters &&
               Object.keys(filters).map((filter) => (
                 <Filter
+                  show={filtersShow}
                   key={`filter-${filter}`}
                   name={filter}
                   filter={filters[filter]}
@@ -73,7 +85,7 @@ function Index({ _jobs, filters }) {
                 />
               ))}
           </div>
-          <div class="col-span-5 bg-white rounded p-6 border border-solid border-gray-100 relative">
+          <div class="col-span-1 md:col-span-5 bg-white rounded p-6 border border-solid border-gray-100 relative">
             {!jobs && <Loading />}
             <>
               <JobsFilters
