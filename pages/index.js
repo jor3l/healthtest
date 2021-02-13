@@ -1,4 +1,3 @@
-import { server } from "../config";
 import { useState, useEffect } from "react";
 
 import nextSort from "../functions/next-sort";
@@ -14,11 +13,14 @@ import Filters from "../components/filters";
 import Loading from "../components/loading";
 import Footer from "../components/footer";
 
+import env from "../config/constants";
+const { origin } = env[process.env.NODE_ENV];
+
 let waitTimeout = null;
 const getJobs = async (filters, search) => {
   return await (
     await fetch(
-      server +
+      origin +
         `/api/jobs?search=${encodeURIComponent(search)}&${toQueryString(
           filters
         )}`
@@ -106,8 +108,8 @@ function Index({ _jobs, filters }) {
 }
 
 export async function getServerSideProps() {
-  const filters = await (await fetch(server + "/api/filters")).json();
-  const jobs = await (await fetch(server + "/api/jobs")).json();
+  const filters = await (await fetch(origin + "/api/filters")).json();
+  const jobs = await (await fetch(origin + "/api/jobs")).json();
   return {
     props: {
       _jobs: jobs,
