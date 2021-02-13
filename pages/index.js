@@ -1,6 +1,10 @@
 import { server } from "../config";
 import { useState, useEffect } from "react";
 
+import nextSort from "../functions/next-sort";
+import toQueryString from "../functions/to-query-string";
+import sortArray from "../functions/sort-array";
+
 import Header from "../components/header";
 import Search from "../components/search";
 import Filter from "../components/filter";
@@ -8,6 +12,7 @@ import JobsFilters from "../components/jobs-filters";
 import HospitalJobs from "../components/hospital-jobs";
 import Filters from "../components/filters";
 import Loading from "../components/loading";
+import Footer from "../components/footer";
 
 let waitTimeout = null;
 const getJobs = async (filters, search) => {
@@ -21,20 +26,16 @@ const getJobs = async (filters, search) => {
   ).json();
 };
 
-function toQueryString(paramsObject) {
-  return Object.keys(paramsObject)
-    .map(
-      (key) =>
-        `filter.${encodeURIComponent(key)}=${encodeURIComponent(
-          paramsObject[key]
-        )}`
-    )
-    .join("&");
-}
-
 function Index({ _jobs, filters }) {
   const [searchFilters, setFilters] = useState({});
   const [search, setSearch] = useState("");
+  const [sort, setSort] = useState({
+    city: "",
+    department: "",
+    required_credentials: "",
+    experience: "",
+    job_title: "",
+  });
   const [jobs, setJobs] = useState([..._jobs]);
 
   useEffect(() => {
@@ -44,10 +45,17 @@ function Index({ _jobs, filters }) {
     }, 300);
   }, [searchFilters, search]);
 
+  let sorted = [...jobs];
+
+  sorted &&
+    Object.keys(sort).forEach((key) =>
+      sort[key] !== "" ? (sorted = sortArray(sorted, key, sort[key])) : null
+    );
+
   return (
     <>
       <Header />
-      <div class="bg-gray-50 h-screen">
+      <div class="bg-gray-50 min-h-screen pb-10">
         <main class="container mx-auto grid grid-cols-6 gap-4 h-full auto-rows-max">
           <Search onChange={(value) => setSearch(value)} />
           <div class="side-column">
@@ -63,10 +71,16 @@ function Index({ _jobs, filters }) {
                 />
               ))}
           </div>
-          <div class="col-span-5 bg-white rounded p-6 border border-solid border-gray-100">
+          <div class="col-span-5 bg-white rounded p-6 border border-solid border-gray-100 relative">
             {!jobs && <Loading />}
             <>
-              <JobsFilters jobs={jobs} />
+              <JobsFilters
+                jobs={jobs}
+                sort={sort}
+                toggleSort={(key) =>
+                  setSort({ ...sort, [key]: nextSort(sort[key]) })
+                }
+              />
               <Filters
                 filters={searchFilters}
                 onDelete={(key) => {
@@ -75,14 +89,18 @@ function Index({ _jobs, filters }) {
                 }}
               />
 
-              {jobs &&
-                jobs.map((job, i) => (
-                  <HospitalJobs key={`hospital-${jobs.length}-${i}`} {...job} />
+              {sorted &&
+                sorted.map((job, i) => (
+                  <HospitalJobs
+                    key={`hospital-${sorted.length}-${i}`}
+                    {...job}
+                  />
                 ))}
             </>
           </div>
         </main>
       </div>
+      <Footer />
     </>
   );
 }

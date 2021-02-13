@@ -46,7 +46,7 @@ export default async (req, res) => {
     .filter((r) => r.total_jobs_in_hospital > 0);
 
   res.statusCode = 200;
-  // @todo: implement filters and search
+  // @todo: implement sorting
   // @todo: implement automated tests
 
   // this timeout emulates unstable network connection, do not remove this one
