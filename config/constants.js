@@ -3,6 +3,6 @@ export default {
     origin: "http://localhost:3000",
   },
   production: {
-    origin: "https://healthtest-j76o7r9em.vercel.app/",
+    origin: "https://healthtest.vercel.app",
   },
 };
